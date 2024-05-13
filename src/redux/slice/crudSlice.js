@@ -22,15 +22,28 @@ const crudSlice = createSlice({
   name: "crud",
   initialState,
   reducers: {
-        addTask: (state, action) => {
-      // a) todo'ya id ekle
+    addTask: (state, action) => {
       action.payload.id = v4();
 
-      // b) veriyi task'lerin arasına ekle
       state.tasks.push(action.payload);
     },
-    editTask: (state, action) => {},
-    deleteTask: (state, action) => {},
+    deleteTask: (state, action) => {
+      //1.first choice filter
+      //  const filtred= state.tasks.filter((task) => task.id !== action.payload);
+      //   state.tasks = filtred;
+      //2.choice splice
+      //a)first need to find a index
+      const i = state.tasks.findIndex((t) => t.id === action.payload);
+      //for the delete from tje list(first param what you wanna delete,second param how many you wanna delete)
+      state.tasks.splice(i, 1);
+    },
+
+    editTask: (state, action) => {
+      //for the update need to find a place where is the data
+      const i = state.tasks.findIndex((t) => t.id === action.payload.id);
+      // for the update
+      state.tasks.splice(i, 1, action.payload);
+    },
   },
 });
 
